@@ -58,6 +58,9 @@ const updateUser = (req, res, next) => {
         const fields = Object.keys(err.errors).join(', ');
         return next(new BadRequest(`${fields} is not correct`));
       }
+      if (err.code === 11000) {
+        return next(new Conflict('This email is already taken:('));
+      }
       return next(err);
     });
 };

@@ -36,11 +36,38 @@ const deleteMovie = (req, res, next) => {
 
 const createMovie = (req, res, next) => {
   const id = req.user._id;
-  const { name, link } = req.body;
+  const {
+    country,
+    director,
+    duration,
+    year,
+    description,
+    image,
+    trailerLink,
+    thumbnail,
+    movieId,
+    nameRU,
+    nameEN,
+  } = req.body;
 
-  Movie.create({ name, link, owner: id })
+  Movie.create(
+    {
+      country,
+      director,
+      duration,
+      year,
+      description,
+      image,
+      trailerLink,
+      thumbnail,
+      movieId,
+      nameRU,
+      nameEN,
+      owner: id,
+    },
+  )
     .then((movie) => {
-      res.send({ data: movie });
+      res.send(movie);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {

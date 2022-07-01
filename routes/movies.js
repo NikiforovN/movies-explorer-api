@@ -1,29 +1,33 @@
 const router = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
-const validator = require('validator');
+const { urlValidator } = require('../utils/urlValidator');
 const {
   getMovies,
   createMovie,
   deleteMovie,
 } = require('../controllers/movies');
 
-router.get('/', getMovies);
+router.get('/movies', getMovies);
 
-router.delete('/:_id', celebrate({
+router.delete('/movies/:movieId', celebrate({
   params: Joi.object().keys({
     movieId: Joi.string().required().length(24).hex(),
   }),
 }), deleteMovie);
 
-router.post('/', celebrate({
+router.post('/movies', celebrate({
   body: Joi.object().keys({
-    name: Joi.string().min(2).max(30).required(),
-    link: Joi.string().required().custom((value) => {
-      if (!validator.isURL(value, { require_protocol: true })) {
-        throw new Error('Неправильный формат ссылки');
-      }
-      return value;
-    }),
+    country: Joi.string().required(),
+    director: Joi.string().required(),
+    duration: Joi.number().required(),
+    description: Joi.string().required(),
+    year: Joi.string().required(),
+    image: Joi.string().required().custom(urlValidator),
+    trailerLink: Joi.string().required().custom(urlValidator),
+    thumbnail: Joi.string().required().custom(urlValidator),
+    movieId: Joi.string().required(),
+    nameRU: Joi.string().required(),
+    nameEN: Joi.string().required(),
   }),
 }), createMovie);
 
