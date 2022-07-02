@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 const cors = require('cors');
+const helmet = require('helmet');
 const errorHandler = require('./middlewares/errorHandler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
@@ -13,6 +14,8 @@ const app = express();
 mongoose.connect(MONGOPATH);
 
 app.use(express.json());
+
+app.use(helmet());
 
 app.use(cors());
 
